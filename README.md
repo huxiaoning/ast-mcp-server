@@ -39,6 +39,7 @@ pip install -r requirements.txt
 # 5. Build language parsers:
 python build_parsers.py
 ```
+
 ## Usage
 
 ## Integration with Claude or other MCP clients
@@ -86,4 +87,4 @@ mcp dev server.py
 
 ## License
 
-MIT
+[MIT](https://github.com/angrysky56/ast-mcp-server/blob/main/LICENSE)
