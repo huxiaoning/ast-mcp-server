@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "AstAnalyzer": {
+      "command": "uv",
+      "args": [
+        "--directory", "/home/ty/Repositories/ai_workspace/ast-mcp-server",
+        "run", "server.py"
+      ]
+    }
+  }
+}

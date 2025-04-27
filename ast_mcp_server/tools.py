@@ -8,11 +8,18 @@ capabilities through the Model Context Protocol.
 from typing import Dict, List, Optional, Union, Any
 import os
 import json
-from tree_sitter import Language, Parser, Node
+import importlib
+from tree_sitter import Parser, Node
 
-# Path to the compiled language library
+# Try to import language modules
+LANGUAGE_MODULES = {
+    "python": "tree_sitter_python",
+    "javascript": "tree_sitter_javascript",
+}
+
+# Path to the parsers availability marker
 PARSERS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "parsers")
-LANGUAGES_LIB = os.path.join(PARSERS_DIR, "languages.so")
+PARSERS_AVAILABLE_FILE = os.path.join(PARSERS_DIR, "parsers_available.txt")
 
 # Language identifiers mapping
 LANGUAGE_MAP = {
@@ -33,22 +40,37 @@ LANGUAGE_MAP = {
     "java": "java"
 }
 
-# Initialize parser if language library exists
-parser = Parser()
+# Initialize parser and languages
 languages = {}
 
 def init_parsers():
-    """Initialize the tree-sitter parsers if the language library exists."""
-    global languages, parser
+    """Initialize the tree-sitter parsers."""
+    global languages
     
-    if not os.path.exists(LANGUAGES_LIB):
+    # Check if parsers are marked as available
+    if not os.path.exists(PARSERS_AVAILABLE_FILE):
         return False
     
     try:
-        for lang_name in ["python", "javascript", "typescript", "tsx", "go", "rust", "c", "cpp", "java"]:
-            languages[lang_name] = Language(LANGUAGES_LIB, lang_name)
+        # Check which language modules are available
+        available_languages = []
+        for lang_name, module_name in LANGUAGE_MODULES.items():
+            try:
+                module = importlib.import_module(module_name)
+                from tree_sitter import Language
+                languages[lang_name] = Language(module.language())
+                available_languages.append(lang_name)
+            except ImportError:
+                print(f"Module {module_name} not found. Some language support may be limited.")
+            except Exception as e:
+                print(f"Error initializing {lang_name} language: {e}")
+        
+        if available_languages:
+            print(f"Successfully initialized parsers for: {', '.join(available_languages)}")
+            return True
+        else:
+            return False
             
-        return True
     except Exception as e:
         print(f"Error initializing parsers: {e}")
         return False
@@ -151,8 +173,9 @@ def parse_code_to_ast(code: str, language: Optional[str] = None, filename: Optio
         return {"error": f"Unsupported language: {language}"}
     
     try:
-        # Set the parser language
-        parser.set_language(languages[language])
+        # Create a parser and set the language
+        parser = Parser()
+        parser.language = languages[language]
         
         # Parse the code
         source_bytes = bytes(code, 'utf-8')
