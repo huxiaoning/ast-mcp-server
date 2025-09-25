@@ -28,11 +28,7 @@ except ImportError:
     ENHANCED_TOOLS_AVAILABLE = False
 
 # Initialize the MCP server
-mcp = FastMCP(
-    "AstAnalyzer",
-    version="0.2.0",
-    description="Code structure and semantic analysis using AST/ASG with enhanced features"
-)
+mcp = FastMCP("AstAnalyzer")
 
 # Register tools with the server
 register_tools(mcp)
@@ -393,4 +389,3 @@ if __name__ == "__main__":
     print("Starting AST/ASG Code Analysis MCP Server...")
     print("Running MCP server...")
     mcp.run()
-    print("MCP server exited.")  # This will only print if mcp.run() returns
