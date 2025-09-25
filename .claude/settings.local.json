@@ -5,5 +5,9 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "desktop-commander",
+    "ast-analyzer"
+  ]
 }

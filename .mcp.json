@@ -10,6 +10,20 @@
         "-y",
         "@wonderwhy-er/desktop-commander"
       ]
+    },
+    "ast-analyzer": {
+      "command": "mise",
+      "args": [
+        "exec",
+        "python@3.12",
+        "uv",
+        "--",
+        "uv",
+        "--directory",
+        "F:\\SingBoxSpace\\ast-mcp-server",
+        "run",
+        "server.py"
+      ]
     }
   }
 }
