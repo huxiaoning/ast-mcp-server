@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "desktop-commander": {
+      "command": "mise",
+      "args": [
+        "exec",
+        "node@24",
+        "--",
+        "npx",
+        "-y",
+        "@wonderwhy-er/desktop-commander"
+      ]
+    }
+  }
+}
