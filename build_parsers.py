@@ -17,6 +17,7 @@ os.makedirs(PARSERS_PATH, exist_ok=True)
 LANGUAGE_MODULES = {
     "python": "tree_sitter_python",
     "javascript": "tree_sitter_javascript",
+    "java": "tree_sitter_java",
 }
 
 # Additional languages to install if needed (commented out until needed)
